@@ -1,8 +1,6 @@
-Rahalati v3.2.3
+Rahalati launcher hotfix for v3.2.3
 
-Upload ALL contents to repository root preserving paths.
-- releases/v3.2.3/: new owner candidate.
-- root sw.js: cache bump to 3.2.3.
-- Community place discovery: OpenStreetMap + Wikidata/Wikipedia + Wikimedia, image required per result.
-- Existing trips with missing covers are repaired automatically from city image search.
-- New home weather card: short forecast, ECMWF seasonal outlook up to ~7 months, then historical climate fallback.
+Upload the contents to the repository root and replace files with the same paths.
+Files:
+- /index.html : root launcher, defaults to stable v3.2.2 and reopens the active release.
+- /releases/v3.2.3/index.html : records v3.2.3 as the active release whenever it is opened.
