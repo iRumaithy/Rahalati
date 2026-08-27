@@ -1,12 +1,9 @@
-const BUILD_VERSION='3.0.0';
-const CACHE=`rahalati-shell-v${BUILD_VERSION}`;
-const CORE=['./','./index.html','./app.css','./config.js','./app.js','./manifest.webmanifest','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
-self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()))});
-self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('rahalati-shell-v')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
-self.addEventListener('message',event=>{if(event.data?.type==='SKIP_WAITING')self.skipWaiting()});
-self.addEventListener('fetch',event=>{
-  const req=event.request,url=new URL(req.url);
-  if(req.method!=='GET')return;
-  if(url.hostname.includes('supabase.co')||url.hostname.includes('jsdelivr.net')){event.respondWith(fetch(req).catch(()=>caches.match(req)));return}
-  if(url.origin===self.location.origin){event.respondWith(fetch(req).then(res=>{const copy=res.clone();caches.open(CACHE).then(c=>c.put(req,copy));return res}).catch(()=>caches.match(req).then(r=>r||caches.match('./index.html'))));}
-});
+const BUILD_VERSION='3.2.1';
+const CACHE='rahalati-root-shell-v3.2.1';
+const ROOT_CORE=['/','/index.html','/app.css','/config.js','/manifest.webmanifest','/icon-192.png','/icon-512.png','/apple-touch-icon.png'];
+self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ROOT_CORE)).catch(()=>{}).then(()=>self.skipWaiting())));
+self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('rahalati-root-shell-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
+self.addEventListener('message',e=>{if(e.data?.type==='SKIP_WAITING')self.skipWaiting()});
+self.addEventListener('fetch',e=>{const r=e.request,u=new URL(r.url);if(r.method!=='GET')return;if(u.hostname.includes('supabase.co')||u.hostname.includes('jsdelivr.net')){e.respondWith(fetch(r).catch(()=>caches.match(r)));return}if(u.origin===self.location.origin){e.respondWith(fetch(r,{cache:'no-store'}).then(res=>{const cp=res.clone();caches.open(CACHE).then(c=>c.put(r,cp)).catch(()=>{});return res}).catch(()=>caches.match(r).then(x=>x||(r.mode==='navigate'?caches.match('/index.html'):undefined))))}});
+self.addEventListener('push',event=>{let d={};try{d=event.data?.json?.()||{}}catch{};event.waitUntil(self.registration.showNotification(d.title||'رحلاتي',{body:d.body||'لديك إشعار جديد في رحلاتي.',icon:'/icon-192.png',badge:'/icon-192.png',tag:d.tag||`rahalati-${Date.now()}`,renotify:true,data:{url:d.url||'/',kind:d.kind||'general',version:d.version||''}}))});
+self.addEventListener('notificationclick',event=>{event.notification.close();const target=new URL(event.notification?.data?.url||'/',self.location.origin).href;event.waitUntil((async()=>{const wins=await self.clients.matchAll({type:'window',includeUncontrolled:true});for(const c of wins){try{await c.focus();if('navigate' in c)await c.navigate(target);return}catch{}}if(self.clients.openWindow)return self.clients.openWindow(target)})())});
