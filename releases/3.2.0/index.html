@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#12372f" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="رحلاتي" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+  <link rel="stylesheet" href="./app.css" />
+  <title>رحلاتي — Travel Journal</title>
+</head>
+<body>
+  <div id="loginView" class="auth-view hidden">
+    <div class="auth-card">
+      <div class="auth-seal">✦</div>
+      <div class="auth-kicker">RAHALATI</div>
+      <h1>رحلاتي</h1>
+      <p>سجّل الدخول للوصول إلى رحلاتك من أي جهاز.</p>
+      <form id="loginForm">
+        <label>الإيميل أو اسم المستخدم
+          <input id="loginIdentifier" autocomplete="username" required placeholder="name@example.com أو username" />
+        </label>
+        <label>كلمة المرور
+          <input id="loginPassword" type="password" autocomplete="current-password" required placeholder="••••••••" />
+        </label>
+        <button class="primary" type="submit">تسجيل الدخول</button>
+        <div id="loginMessage" class="form-message"></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="appShell" class="app-shell hidden">
+    <div id="appViewport" class="app-viewport">
+      <div class="app">
+        <header class="topbar">
+          <div class="wordmark">
+            <div class="seal">✦</div>
+            <div>
+              <h1>رحلاتي</h1>
+              <small>TRAVEL JOURNAL</small>
+            </div>
+          </div>
+          <div class="top-actions">
+            <button class="iconbtn notification-icon" id="notificationBtn" aria-label="الإشعارات" title="الإشعارات"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span id="notificationBadge" class="notification-badge hidden">0</span></button>
+            <button class="iconbtn" id="refreshBtn" aria-label="تحديث الصفحة" title="تحديث الصفحة">↻</button>
+            <button class="iconbtn" id="themeBtn" aria-label="تبديل المظهر" title="تبديل المظهر">☾</button>
+            <button class="iconbtn" id="accountBtn" aria-label="الحساب" title="الحساب">◎</button>
+          </div>
+        </header>
+
+        <div id="updateBanner" class="update-banner hidden"></div>
+        <div id="pushPrompt" class="push-prompt hidden">
+          <div><b>فعّل إشعارات رحلاتي</b><p id="pushPromptText">ليصلك إشعار فور وصول تحديث جديد.</p></div>
+          <button id="pushPromptBtn">تفعيل</button>
+          <button id="pushPromptClose" class="push-prompt-close" aria-label="إخفاء">×</button>
+        </div>
+
+        <main>
+          <section class="tabpage active" data-page="home">
+            <div id="homeHero" class="hero">
+              <div class="hero-top">
+                <div id="heroChip" class="passport-chip">✈️ الرحلة القادمة</div>
+                <div id="heroStamp" class="stamp">NEXT<br>TRIP</div>
+              </div>
+              <div class="hero-content">
+                <div class="overline">NEXT DESTINATION</div>
+                <h2 id="heroCity">رحلتك القادمة</h2>
+                <div id="heroRoute" class="route">أنشئ أول رحلة وابدأ التخطيط</div>
+                <div class="ticket">
+                  <div><small>موعد الرحلة</small><b id="heroDates">—</b></div>
+                  <div><small>مدة الرحلة</small><b id="heroDuration">—</b></div>
+                  <div class="days"><strong id="daysLeft">—</strong><span>يوم متبقي</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="sectionhead"><h3>دفتر الرحلة</h3><button id="openTripsBtn">كل الرحلات</button></div>
+              <div class="ledger">
+                <div class="ledger-card"><span>✈️</span><b id="statBookings">0</b><small>حجوزات</small></div>
+                <div class="ledger-card"><span>📍</span><b id="statPlaces">0</b><small>أماكن</small></div>
+                <div class="ledger-card"><span>💳</span><b id="statBudget">0</b><small>الميزانية</small></div>
+                <div class="ledger-card"><span>🧳</span><b id="packingStat">0/0</b><small>الشنطة</small></div>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="sectionhead"><h3>المخطط الأقرب</h3><button data-goto="plan">فتح المخطط</button></div>
+              <div class="travel-card">
+                <div class="day-head">
+                  <div><div id="nextPlanDate" class="date">لم تتم إضافة أنشطة بعد</div><h4 id="nextPlanTitle">ابدأ ببناء يوم الرحلة</h4></div>
+                  <div class="day-number">01</div>
+                </div>
+                <div id="homeTimeline" class="timeline empty-state">اضغط + لإضافة أول نشاط.</div>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="sectionhead"><h3>أماكن على القائمة</h3><button data-goto="places">استكشاف الكل</button></div>
+              <div id="homePlaces" class="cardsrow"></div>
+            </div>
+          </section>
+
+          <section class="tabpage" data-page="plan">
+            <h2 class="page-title">المخطط اليومي</h2>
+            <p class="page-sub">الأنشطة مرتبة حسب التاريخ والوقت.</p>
+            <div id="planList" class="stack-list"></div>
+          </section>
+
+          <section class="tabpage" data-page="bookings">
+            <h2 class="page-title">الحجوزات</h2>
+            <p class="page-sub">تذاكر الطيران، الفنادق والتنقل في مكان واحد.</p>
+            <div id="bookingList" class="panel"></div>
+          </section>
+
+          <section class="tabpage" data-page="places">
+            <h2 class="page-title">الأماكن</h2>
+            <p class="page-sub">أماكن محفوظة واقتراحات مخصصة حسب وجهتك.</p>
+
+            <div class="suggest-card">
+              <div class="suggest-head">
+                <div>
+                  <small>RAHALATI PICKS</small>
+                  <h3>اقترح لي أماكن تستحق الزيارة</h3>
+                  <p>اختر الدولة والمدينة؛ يرشّح لك رحلاتي أماكن بارزة من مصادر مفتوحة مثل Wikipedia/Wikidata وWikimedia، مع مؤشر شهرة مفتوح وصورة حقيقية تلقائيًا — بدون أي API مدفوع.</p>
+                </div>
+                <span>⌖</span>
+              </div>
+              <div class="grid">
+                <label class="field">الدولة<input id="suggestCountry" placeholder="مثال: إيطاليا" /></label>
+                <label class="field">المدينة<input id="suggestCity" placeholder="مثال: روما" /></label>
+              </div>
+              <button id="suggestBtn" class="primary">اقترح عليّ</button>
+              <div id="suggestStatus" class="form-message"></div>
+              <div id="suggestionsList" class="suggestions-list"></div>
+            </div>
+
+            <div class="section">
+              <div class="sectionhead"><h3>المحفوظ في الرحلة</h3></div>
+              <div id="placesList" class="panel"></div>
+            </div>
+          </section>
+
+          <section class="tabpage" data-page="budget">
+            <h2 class="page-title">الميزانية</h2>
+            <p class="page-sub">صورة واضحة للمصروف والمتبقي.</p>
+            <div class="panel budget-summary">
+              <div class="row"><div><b>الميزانية الكاملة</b><small id="budgetCurrency">AED</small></div><div id="budgetTotal" class="money">0</div></div>
+              <div class="row"><div><b>المصروف المسجل</b><small>كل المصروفات المضافة</small></div><div id="budgetSpent" class="money">0</div></div>
+              <div class="row"><div><b>المتبقي</b><small>وفق الميزانية الحالية</small></div><div id="budgetRemaining" class="money">0</div></div>
+            </div>
+            <div class="panel"><h3>المصروفات</h3><div id="expenseList"></div></div>
+          </section>
+
+          <section class="tabpage" data-page="packing">
+            <div class="page-head-row"><div><h2 class="page-title">الشنطة</h2><p class="page-sub">تتزامن القائمة مع حسابك وتبقى معك على أي جهاز.</p></div><button id="packingSuggestBtn" class="smart-action">✦ اقترح لي</button></div>
+            <div id="packingSuggestStatus" class="form-message"></div>
+            <div id="packingList" class="panel"></div>
+          </section>
+
+          <section class="tabpage" data-page="docs">
+            <h2 class="page-title">المستندات</h2>
+            <p class="page-sub">بيانات المستندات المهمة للرحلة.</p>
+            <div id="docsList" class="panel"></div>
+          </section>
+        </main>
+
+        <footer class="version-footer">
+          <span>رحلاتي</span>
+          <span>الإصدار <b id="pageVersion">3.2.0</b></span>
+        </footer>
+      </div>
+    </div>
+
+    <button class="fab" id="fab" aria-label="إضافة">+</button>
+    <nav class="bottomnav">
+      <button class="navbtn active" data-target="home"><span>⌂</span>الرئيسية</button>
+      <button class="navbtn" data-target="plan"><span>🗓</span>المخطط</button>
+      <button class="navbtn" data-target="bookings"><span>✈</span>الحجوزات</button>
+      <button class="navbtn" data-target="places"><span>⌖</span>الأماكن</button>
+      <button class="navbtn" data-target="budget"><span>◈</span>الميزانية</button>
+      <button class="navbtn" data-target="packing"><span>▣</span>الشنطة</button>
+      <button class="navbtn" data-target="docs"><span>▤</span>المستندات</button>
+    </nav>
+  </div>
+
+  <div class="modal" id="addModal"><div class="sheet">
+    <h3>إضافة إلى الرحلة</h3>
+    <div class="field"><label>نوع العنصر</label>
+      <select id="itemType">
+        <option value="place">مكان</option><option value="activity">نشاط</option><option value="booking">حجز</option>
+        <option value="expense">مصروف</option><option value="packing">غرض للشنطة</option><option value="document">مستند</option><option value="note">ملاحظة</option>
+      </select>
+    </div>
+    <div class="field"><label>الاسم</label><input id="itemName" placeholder="مثال: اسم المكان" /></div>
+    <div class="grid"><div class="field"><label>التاريخ</label><input type="date" id="itemDate" /></div><div class="field"><label>الوقت</label><input type="time" id="itemTime" /></div></div>
+    <div class="grid"><div class="field"><label>المبلغ</label><input type="number" inputmode="decimal" id="itemAmount" min="0" step="0.01" placeholder="اختياري" /></div><div class="field"><label>العملة</label><input id="itemCurrency" placeholder="AED" /></div></div>
+    <div class="field"><label>ملاحظات</label><textarea id="itemNotes" rows="3" placeholder="أي تفاصيل إضافية"></textarea></div>
+    <button class="primary" id="saveItemBtn">حفظ</button><button class="ghost" data-close="addModal">إلغاء</button>
+  </div></div>
+
+  <div class="modal" id="tripsModal"><div class="sheet">
+    <div class="sheet-title"><h3>رحلاتي</h3><button class="mini-btn" id="newTripBtn">+ رحلة جديدة</button></div>
+    <div id="tripList" class="triplist"></div>
+    <button class="ghost" data-close="tripsModal">إغلاق</button>
+  </div></div>
+
+  <div class="modal" id="tripEditorModal"><div class="sheet">
+    <h3>رحلة جديدة</h3>
+    <div class="field"><label>اسم الرحلة</label><input id="tripTitle" placeholder="مثال: إيطاليا 2027" /></div>
+    <div class="grid"><div class="field"><label>الدولة</label><input id="tripCountry" /></div><div class="field"><label>المدينة الرئيسية</label><input id="tripCity" /></div></div>
+    <div class="grid"><div class="field"><label>من</label><input type="date" id="tripStart" /></div><div class="field"><label>إلى</label><input type="date" id="tripEnd" /></div></div>
+    <div class="grid"><div class="field"><label>المسافرون</label><input type="number" id="tripTravelers" min="1" value="1" /></div><div class="field"><label>الميزانية</label><input type="number" id="tripBudget" min="0" step="0.01" value="0" /></div></div>
+    <div class="grid"><div class="field"><label>العملة</label><input id="tripCurrency" value="AED" /></div><div class="field"><label>الحالة</label><select id="tripStatus"><option value="planned">مخطط لها</option><option value="idea">فكرة</option><option value="active">جارية</option><option value="completed">في سجل الرحلات</option><option value="archived">مؤرشفة</option></select></div></div>
+    <div class="auto-cover-note"><span>▧</span><div><b>صورة المدينة تلقائيًا</b><small>سيبحث رحلاتي عن صورة مناسبة للمدينة من Wikipedia / Wikimedia عند إنشاء الرحلة.</small></div></div>
+    <div id="tripFormMessage" class="form-message"></div>
+    <button class="primary" id="saveTripBtn">إنشاء الرحلة</button><button class="ghost" data-close="tripEditorModal">إلغاء</button>
+  </div></div>
+
+  <div class="modal" id="notificationsModal"><div class="sheet notifications-sheet">
+    <div class="sheet-title">
+      <div><h3>الإشعارات</h3><p class="sheet-sub">تحديثات رحلاتي والتنبيهات المهمة.</p></div>
+      <button class="mini-btn" id="markNotificationsReadBtn">تحديد كمقروء</button>
+    </div>
+    <div id="notificationsList" class="notifications-list"><div class="empty-state">لا توجد إشعارات.</div></div>
+    <button class="ghost" data-close="notificationsModal">إغلاق</button>
+  </div></div>
+
+  <div class="modal" id="accountModal"><div class="sheet account-sheet">
+    <div class="account-hero">
+      <div class="avatar">✦</div>
+      <div><h3 id="accountName">الحساب</h3><p id="accountIdentity">—</p></div>
+      <span id="accountRole" class="badge">مستخدم</span>
+    </div>
+
+    <div class="panel compact-panel">
+      <div class="row"><div><b>نسخة احتياطية</b><small>تنزيل بيانات رحلاتك كملف JSON</small></div><button class="mini-btn" id="backupBtn">تنزيل</button></div>
+      <div class="row"><div><b>تحديث الصفحة</b><small>فحص ملفات التطبيق وإعادة التحميل</small></div><button class="mini-btn" id="accountRefreshBtn">تحديث</button></div>
+    </div>
+
+    <div class="panel compact-panel">
+      <div class="row">
+        <div><b>الإشعارات الخارجية</b><small id="pushStatusText">جارٍ فحص حالة الإشعارات…</small></div>
+        <button class="mini-btn" id="pushEnableBtn">تفعيل</button>
+      </div>
+    </div>
+
+    <div id="ownerPanel" class="owner-panel hidden">
+      <div class="owner-head"><div><small>OWNER CONTROL</small><h3>إدارة رحلاتي</h3></div><span>♛</span></div>
+      <div class="owner-tabs"><button class="owner-tab active" data-owner-tab="users">المستخدمون</button><button class="owner-tab" data-owner-tab="releases">التحديثات</button></div>
+
+      <div class="owner-tabpage active" data-owner-page="users">
+        <div class="panel">
+          <div class="sheet-title"><h3>المستخدمون</h3><button class="mini-btn" id="refreshUsersBtn">↻</button></div>
+          <div id="usersList"></div>
+        </div>
+        <div class="panel">
+          <h3>إضافة مستخدم</h3>
+          <div class="grid"><label class="field">الاسم<input id="newUserName" /></label><label class="field">اسم المستخدم<input id="newUsername" /></label></div>
+          <label class="field">الإيميل<input id="newUserEmail" type="email" /></label>
+          <label class="field">كلمة المرور المؤقتة<input id="newUserPassword" type="password" minlength="8" /></label>
+          <button class="primary" id="createUserBtn">إنشاء المستخدم</button>
+          <div id="userAdminMessage" class="form-message"></div>
+        </div>
+      </div>
+
+      <div class="owner-tabpage" data-owner-page="releases">
+        <div class="panel">
+          <h3>حالة الإصدارات</h3>
+          <div id="releaseStatus"></div>
+        </div>
+        <div class="panel">
+          <h3>تجهيز إصدار للمالك</h3>
+          <div class="grid"><label class="field">رقم الإصدار<input id="candidateVersion" placeholder="3.1.1" /></label><label class="field">مسار التجربة<input id="candidatePath" value="" placeholder="يُحدد تلقائيًا" readonly /></label></div>
+          <label class="field">ملاحظات الإصدار<textarea id="candidateNotes" rows="3"></textarea></label>
+          <button class="primary" id="stageReleaseBtn">إرسال للمالك للتجربة</button>
+          <div id="releaseMessage" class="form-message"></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="danger-button" id="logoutBtn">تسجيل الخروج</button>
+    <button class="ghost" data-close="accountModal">إغلاق</button>
+  </div></div>
+
+  <script src="./config.js"></script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
