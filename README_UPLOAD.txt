@@ -1,8 +1,8 @@
-Rahalati v3.2.2
+Rahalati v3.2.3
 
-Upload ALL contents to the repository root, preserving paths.
-- releases/v3.2.2/ is the new candidate.
-- root sw.js is bumped to 3.2.2 to refresh the shared PWA shell.
-- Update banners no longer show when already running that release.
-- Matching release notifications auto-mark read.
-- Trips can be permanently deleted; trip items cascade-delete in Supabase.
+Upload ALL contents to repository root preserving paths.
+- releases/v3.2.3/: new owner candidate.
+- root sw.js: cache bump to 3.2.3.
+- Community place discovery: OpenStreetMap + Wikidata/Wikipedia + Wikimedia, image required per result.
+- Existing trips with missing covers are repaired automatically from city image search.
+- New home weather card: short forecast, ECMWF seasonal outlook up to ~7 months, then historical climate fallback.
