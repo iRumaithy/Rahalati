@@ -1,6 +1,8 @@
-Rahalati v3.2.1 Hotfix
+Rahalati v3.2.2
 
-Upload ALL contents of this package to the repository root, preserving paths.
-- Root manifest.webmanifest and sw.js are infrastructure fixes for one-PWA behavior.
-- releases/v3.2.1/ is the new clean candidate.
-Do not overwrite releases/3.2.0; leave it as rejected history.
+Upload ALL contents to the repository root, preserving paths.
+- releases/v3.2.2/ is the new candidate.
+- root sw.js is bumped to 3.2.2 to refresh the shared PWA shell.
+- Update banners no longer show when already running that release.
+- Matching release notifications auto-mark read.
+- Trips can be permanently deleted; trip items cascade-delete in Supabase.
