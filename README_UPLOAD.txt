@@ -1,16 +1,14 @@
-Rahalati v3.2.5
+Rahalati v3.2.6
 
-IMPORTANT
-Upload ALL contents to the repository ROOT and preserve paths.
-The release MUST appear exactly as:
-  /releases/v3.2.5/
+Upload ALL contents to repository root, preserving paths.
+Release path must be:
+  /releases/v3.2.6/
 
 Changes:
-- "Change image" now sends the current image as an exclusion and retries for a genuinely different cover.
-- Destination image search prefers landmarks / historic center / travel imagery; optional Pexels support.
-- Place recommendations now route to the official Tripadvisor Terra integration and rank by traveler rating.
-- No OpenStreetMap fallback is presented as a Tripadvisor rating.
-- Owner-only Sources tab lets the owner save Tripadvisor Terra and optional Pexels API keys server-side.
-- API keys are not stored in GitHub/client JavaScript.
-
-Tripadvisor Terra is an external service and requires its official API key before Tripadvisor results can load.
+- Weather no longer shows "unavailable": short forecast -> ECMWF seasonal -> 10-year historical climate -> rare emergency seasonal fallback.
+- Arabic-city geocoding is handled server-side using Nominatim + Open-Meteo + Wikipedia coordinate fallbacks.
+- Place recommendations moved from Tripadvisor to Foursquare Places.
+- Foursquare search is sorted by RATING for selected categories and POPULARITY for broad discovery.
+- Images remain independent: official website OG image / Wikimedia; Pexels remains optional for destination covers.
+- Owner Sources tab now configures Foursquare + optional Pexels.
+- Foursquare's free API allowance is limited; this build minimizes calls (one search per recommendation request).
