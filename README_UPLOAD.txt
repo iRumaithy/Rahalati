@@ -1,14 +1,14 @@
-Rahalati v3.2.6
+Rahalati v3.2.7
 
 Upload ALL contents to repository root, preserving paths.
-Release path must be:
-  /releases/v3.2.6/
+Release path:
+  /releases/v3.2.7/
 
 Changes:
-- Weather no longer shows "unavailable": short forecast -> ECMWF seasonal -> 10-year historical climate -> rare emergency seasonal fallback.
-- Arabic-city geocoding is handled server-side using Nominatim + Open-Meteo + Wikipedia coordinate fallbacks.
-- Place recommendations moved from Tripadvisor to Foursquare Places.
-- Foursquare search is sorted by RATING for selected categories and POPULARITY for broad discovery.
-- Images remain independent: official website OG image / Wikimedia; Pexels remains optional for destination covers.
-- Owner Sources tab now configures Foursquare + optional Pexels.
-- Foursquare's free API allowance is limited; this build minimizes calls (one search per recommendation request).
+- No API key is required for place recommendations.
+- Removed Foursquare/Tripadvisor/Pexels key UI.
+- Places use Wikivoyage + OpenStreetMap + Wikipedia/Wikimedia + official websites.
+- Returns up to 12 photographed recommendations per request.
+- Each recommendation includes direct TikTok, YouTube and web search links for current public opinions and travel videos.
+- TikTok is not scraped or misrepresented as an automatic rating source.
+- Weather continues to use the no-key multi-stage Open-Meteo/ECMWF/historical fallback.

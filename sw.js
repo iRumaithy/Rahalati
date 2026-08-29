@@ -1,5 +1,5 @@
-const BUILD_VERSION='3.2.6';
-const CACHE='rahalati-root-shell-v3.2.6';
+const BUILD_VERSION='3.2.7';
+const CACHE='rahalati-root-shell-v3.2.7';
 const ROOT_CORE=['/','/index.html','/app.css','/config.js','/manifest.webmanifest','/icon-192.png','/icon-512.png','/apple-touch-icon.png'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ROOT_CORE)).catch(()=>{}).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('rahalati-root-shell-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
